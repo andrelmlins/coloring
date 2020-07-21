@@ -1,24 +1,24 @@
-# 🌈 Colored String
+# 🌈 Coloring
 
-🌈 Convert string in differents color pattern
+Convert values to color simply and securely.
 
-[![Crates.io](https://img.shields.io/crates/v/colored_string)](https://crates.io/crates/colored_string) &bull; [![Crates.io](https://img.shields.io/crates/l/colored_string)](https://github.com/andrelmlins/colored_string/blob/master/LICENSE) &bull; [![Build Status](https://travis-ci.com/andrelmlins/colored_string.svg?branch=master)](https://travis-ci.com/andrelmlins/colored_string) &bull; [![API](https://docs.rs/colored_string/badge.svg)](https://docs.rs/colored_string)
+[![Crates.io](https://img.shields.io/crates/v/coloring)](https://crates.io/crates/coloring) &bull; [![Crates.io](https://img.shields.io/crates/l/coloring)](https://github.com/andrelmlins/coloring/blob/master/LICENSE) &bull; [![Build Status](https://travis-ci.com/andrelmlins/coloring.svg?branch=master)](https://travis-ci.com/andrelmlins/coloring) &bull; [![API](https://docs.rs/coloring/badge.svg)](https://docs.rs/coloring)
 
 ## Installation
 
-add the dependency in the `Cargo.toml` file:
+Add the dependency in the `Cargo.toml` file:
 
 ```toml
 [dependencies]
-colored_string = "0.1.0"
+coloring = "0.1.0"
 ```
 
 ## Basic Use
 
 ```rust
-extern crate colored_string::*;
+extern crate coloring::*;
 ```
 
 ## License
 
-Colored String is open source software [licensed as MIT](https://github.com/andrelmlins/colored_string/blob/master/LICENSE).
+Coloring is open source software [licensed as MIT](https://github.com/andrelmlins/coloring/blob/master/LICENSE).
