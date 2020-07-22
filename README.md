@@ -16,7 +16,17 @@ coloring = "0.1.0"
 ## Basic Use
 
 ```rust
-extern crate coloring::*;
+extern crate coloring::Coloring;
+
+fn main() {
+  let coloring = Coloring::new("My String");
+
+  println!("{}", coloring.to_hexadecimal());
+  // #259f0c
+
+  println!("{:?}", coloring.to_rgb());
+  // [37, 159, 0]
+}
 ```
 
 ## License
