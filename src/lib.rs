@@ -1,3 +1,3 @@
-mod convert;
+mod coloring;
 
-pub use convert::*;
+pub use coloring::*;
