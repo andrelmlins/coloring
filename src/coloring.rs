@@ -69,7 +69,7 @@ impl Coloring {
                     colors_hsl[0] = 60.0 * ((colors[2] - colors[0]) / delta + 2.0);
                 }
                 x if x == colors[2] => {
-                    colors_hsl[1] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
+                    colors_hsl[0] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
                 }
                 _ => {}
             }
@@ -109,9 +109,57 @@ impl Coloring {
         colors_cmyk[0] = libm::round(colors_cmyk[0] * 100.0);
         colors_cmyk[1] = libm::round(colors_cmyk[1] * 100.0);
         colors_cmyk[2] = libm::round(colors_cmyk[2] * 100.0);
-        colors_cmyk[3] = libm::round(colors_cmyk[2] * 100.0);
+        colors_cmyk[3] = libm::round(colors_cmyk[3] * 100.0);
 
         return colors_cmyk;
+    }
+
+    pub fn to_hsv(&self) -> [f64; 3] {
+        let mut colors: [f64; 3] = [0.0; 3];
+        let mut colors_hsv: [f64; 3] = [0.0; 3];
+
+        for i in 0..3 {
+            let value = (self.hash >> (i * 8)) & 255;
+            colors[i] = (value as f64) / 255.0;
+        }
+
+        let min = colors.iter().fold(f64::INFINITY, |a, &b| a.min(b)) as f64;
+        let max = colors.iter().fold(f64::MIN, |a, &b| a.max(b)) as f64;
+        let delta = max - min;
+
+        colors_hsv[2] = max;
+
+        if max == 0.0 {
+            colors_hsv[1] = 0.0;
+        } else {
+            colors_hsv[1] = delta / max;
+        }
+
+        if delta == 0.0 {
+            colors_hsv[0] = 0.0;
+        } else {
+            match max {
+                x if x == colors[0] => {
+                    colors_hsv[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / delta, 6.0);
+                    if colors[2] > colors[1] {
+                        colors_hsv[0] += 360.0;
+                    }
+                }
+                x if x == colors[1] => {
+                    colors_hsv[0] = 60.0 * ((colors[2] - colors[0]) / delta + 2.0);
+                }
+                x if x == colors[2] => {
+                    colors_hsv[0] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
+                }
+                _ => {}
+            }
+        }
+
+        colors_hsv[0] = libm::round(colors_hsv[0]);
+        colors_hsv[1] = libm::round(colors_hsv[1] * 100.0);
+        colors_hsv[2] = libm::round(colors_hsv[2] * 100.0);
+
+        return colors_hsv;
     }
 
     fn read_string(string: &String) -> u64 {

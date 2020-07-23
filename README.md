@@ -29,6 +29,12 @@ fn main() {
 
   println!("{:?}", coloring.to_hsl());
   // [110.0, 86.0, 34.0]
+
+  println!("{:?}", coloring.to_cmyk());
+  // [77.0, 0.0, 92.0, 38.0]
+
+  println!("{:?}", coloring.to_hsv());
+  // [110.0, 86.0, 34.0]
 }
 ```
 
