@@ -13,7 +13,9 @@ coloring = "0.1.0"
 ## Basic Use
 
 ```rust
-extern crate coloring::Coloring;
+extern crate coloring;
+
+use coloring::Coloring;
 
 fn main() {
   let coloring = Coloring::new("My String");
@@ -32,4 +34,6 @@ fn main() {
 
 mod coloring;
 
-pub use coloring::Coloring;
+pub use crate::coloring::Coloring;
+
+// pub use coloring::Coloring;
