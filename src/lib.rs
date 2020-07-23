@@ -32,4 +32,4 @@ fn main() {
 
 mod coloring;
 
-pub use coloring::*;
+pub use coloring::Coloring;
