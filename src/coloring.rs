@@ -82,6 +82,38 @@ impl Coloring {
         return colors_hsl;
     }
 
+    pub fn to_cmyk(&self) -> [f64; 4] {
+        let mut colors: [f64; 3] = [0.0; 3];
+        let mut colors_cmyk: [f64; 4] = [0.0; 4];
+
+        for i in 0..3 {
+            let value = (self.hash >> (i * 8)) & 255;
+            colors[i] = value as f64;
+        }
+
+        if colors[0] == 0.0 && colors[1] == 0.0 && colors[2] == 0.0 {
+            return [0.0, 0.0, 0.0, 1.0];
+        }
+
+        colors_cmyk[0] = 1.0 - (colors[0] / 255.0);
+        colors_cmyk[1] = 1.0 - (colors[1] / 255.0);
+        colors_cmyk[2] = 1.0 - (colors[2] / 255.0);
+        colors_cmyk[3] = [colors_cmyk[0], colors_cmyk[1], colors_cmyk[2]]
+            .iter()
+            .fold(f64::INFINITY, |a, &b| a.min(b)) as f64;
+
+        colors_cmyk[0] = (colors_cmyk[0] - colors_cmyk[3]) / (1.0 - colors_cmyk[3]);
+        colors_cmyk[1] = (colors_cmyk[1] - colors_cmyk[3]) / (1.0 - colors_cmyk[3]);
+        colors_cmyk[2] = (colors_cmyk[2] - colors_cmyk[3]) / (1.0 - colors_cmyk[3]);
+
+        colors_cmyk[0] = libm::round(colors_cmyk[0] * 100.0);
+        colors_cmyk[1] = libm::round(colors_cmyk[1] * 100.0);
+        colors_cmyk[2] = libm::round(colors_cmyk[2] * 100.0);
+        colors_cmyk[3] = libm::round(colors_cmyk[2] * 100.0);
+
+        return colors_cmyk;
+    }
+
     fn read_string(string: &String) -> u64 {
         let mut hash: u64 = 0;
         let mut increase = true;
