@@ -14,7 +14,7 @@ Add the dependency in the `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coloring = "0.1.0"
+coloring = "0.3"
 ```
 
 ## Basic Use

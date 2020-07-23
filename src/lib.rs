@@ -1,13 +1,19 @@
 /*!
 Convert values to color simply and securely.
 
+- Convert in hexadecimal, rgb, hsl, cmyk and hsv formats.
+- Sensitive case.
+- Always returns the same result for a string (Pure function).
+
+[![Crates.io](https://img.shields.io/crates/v/coloring)](https://crates.io/crates/coloring) &bull; [![Crates.io](https://img.shields.io/crates/l/coloring)](https://github.com/andrelmlins/coloring/blob/master/LICENSE) &bull; [![Build Status](https://travis-ci.com/andrelmlins/coloring.svg?branch=master)](https://travis-ci.com/andrelmlins/coloring) &bull; [![API](https://docs.rs/coloring/badge.svg)](https://docs.rs/coloring)
+
 ## Installation
 
 Add the dependency in the `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coloring = "0.1.0"
+coloring = "0.3"
 ```
 
 ## Basic Use
@@ -15,7 +21,7 @@ coloring = "0.1.0"
 ```rust
 extern crate coloring;
 
-use coloring::Coloring;
+pub use coloring::Coloring;
 
 fn main() {
   let coloring = Coloring::new("My String");
@@ -27,6 +33,12 @@ fn main() {
   // [37, 159, 12]
 
   println!("{:?}", coloring.to_hsl());
+  // [110.0, 86.0, 34.0]
+
+  println!("{:?}", coloring.to_cmyk());
+  // [77.0, 0.0, 92.0, 38.0]
+
+  println!("{:?}", coloring.to_hsv());
   // [110.0, 86.0, 34.0]
 }
 ```
