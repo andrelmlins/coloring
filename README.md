@@ -2,6 +2,10 @@
 
 Convert values to color simply and securely.
 
+- Convert in hexadecimal, rgb, hsl, cmyk and hsv formats.
+- Sensitive case.
+- Always returns the same result for a string (Pure function).
+
 [![Crates.io](https://img.shields.io/crates/v/coloring)](https://crates.io/crates/coloring) &bull; [![Crates.io](https://img.shields.io/crates/l/coloring)](https://github.com/andrelmlins/coloring/blob/master/LICENSE) &bull; [![Build Status](https://travis-ci.com/andrelmlins/coloring.svg?branch=master)](https://travis-ci.com/andrelmlins/coloring) &bull; [![API](https://docs.rs/coloring/badge.svg)](https://docs.rs/coloring)
 
 ## Installation
