@@ -3,4 +3,14 @@
 [[package]]
 name = "coloring"
 version = "0.2.0"
+dependencies = [
+ "libm 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
+[[package]]
+name = "libm"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[metadata]
+"checksum libm 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "c7d73b3f436185384286bd8098d17ec07c9a7d2388a6599f824d8502b529702a"

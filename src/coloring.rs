@@ -29,12 +29,57 @@ impl Coloring {
     pub fn to_rgb(&self) -> [u64; 3] {
         let mut colors: [u64; 3] = [0; 3];
 
-        for i in 0..2 {
+        for i in 0..3 {
             let value = (self.hash >> (i * 8)) & 255;
             colors[i] = value;
         }
 
         return colors;
+    }
+
+    pub fn to_hsl(&self) -> [f64; 3] {
+        let mut colors: [f64; 3] = [0.0; 3];
+        let mut colors_hsl: [f64; 3] = [0.0; 3];
+
+        for i in 0..3 {
+            let value = (self.hash >> (i * 8)) & 255;
+            colors[i] = (value as f64) / 255.0;
+        }
+
+        let min = colors.iter().fold(f64::INFINITY, |a, &b| a.min(b)) as f64;
+        let max = colors.iter().fold(f64::MIN, |a, &b| a.max(b)) as f64;
+        let degree = max - min;
+
+        colors_hsl[2] = (max + min) / 2.0;
+
+        if degree == 0.0 {
+            colors_hsl[0] = 0.0;
+            colors_hsl[1] = 0.0;
+        } else {
+            colors_hsl[1] = degree / (1.0 - libm::fabs(2.0 * colors_hsl[2] - 1.0));
+
+            match max {
+                x if x == colors[0] => {
+                    colors_hsl[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / degree, 6.0);
+                    if colors[2] > colors[1] {
+                        colors_hsl[0] += 360.0;
+                    }
+                }
+                x if x == colors[1] => {
+                    colors_hsl[0] = 60.0 * ((colors[2] - colors[0]) / degree + 2.0);
+                }
+                x if x == colors[2] => {
+                    colors_hsl[1] = 60.0 * ((colors[0] - colors[1]) / degree + 4.0);
+                }
+                _ => {}
+            }
+        }
+
+        colors_hsl[0] = libm::round(colors_hsl[0]);
+        colors_hsl[1] = libm::round(colors_hsl[1] * 100.0);
+        colors_hsl[2] = libm::round(colors_hsl[2] * 100.0);
+
+        return colors_hsl;
     }
 
     fn read_string(string: &String) -> u64 {
