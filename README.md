@@ -25,7 +25,10 @@ fn main() {
   // #259f0c
 
   println!("{:?}", coloring.to_rgb());
-  // [37, 159, 0]
+  // [37, 159, 12]
+
+  println!("{:?}", coloring.to_hsl());
+  // [110.0, 86.0, 34.0]
 }
 ```
 

@@ -26,12 +26,12 @@ impl Coloring {
         return color;
     }
 
-    pub fn to_rgb(&self) -> [u64; 3] {
-        let mut colors: [u64; 3] = [0; 3];
+    pub fn to_rgb(&self) -> [i64; 3] {
+        let mut colors: [i64; 3] = [0; 3];
 
         for i in 0..3 {
             let value = (self.hash >> (i * 8)) & 255;
-            colors[i] = value;
+            colors[i] = value as i64;
         }
 
         return colors;
@@ -48,28 +48,28 @@ impl Coloring {
 
         let min = colors.iter().fold(f64::INFINITY, |a, &b| a.min(b)) as f64;
         let max = colors.iter().fold(f64::MIN, |a, &b| a.max(b)) as f64;
-        let degree = max - min;
+        let delta = max - min;
 
         colors_hsl[2] = (max + min) / 2.0;
 
-        if degree == 0.0 {
+        if delta == 0.0 {
             colors_hsl[0] = 0.0;
             colors_hsl[1] = 0.0;
         } else {
-            colors_hsl[1] = degree / (1.0 - libm::fabs(2.0 * colors_hsl[2] - 1.0));
+            colors_hsl[1] = delta / (1.0 - libm::fabs(2.0 * colors_hsl[2] - 1.0));
 
             match max {
                 x if x == colors[0] => {
-                    colors_hsl[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / degree, 6.0);
+                    colors_hsl[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / delta, 6.0);
                     if colors[2] > colors[1] {
                         colors_hsl[0] += 360.0;
                     }
                 }
                 x if x == colors[1] => {
-                    colors_hsl[0] = 60.0 * ((colors[2] - colors[0]) / degree + 2.0);
+                    colors_hsl[0] = 60.0 * ((colors[2] - colors[0]) / delta + 2.0);
                 }
                 x if x == colors[2] => {
-                    colors_hsl[1] = 60.0 * ((colors[0] - colors[1]) / degree + 4.0);
+                    colors_hsl[1] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
                 }
                 _ => {}
             }
