@@ -2,7 +2,7 @@
 
 Convert values to color simply and securely.
 
-- Convert in hexadecimal, rgb, hsl, cmyk and hsv formats.
+- Convert in hexadecimal, rgb, hsl, cmyk, hsv and hwb formats.
 - Sensitive case.
 - Always returns the same result for a string (Pure function).
 
@@ -39,6 +39,9 @@ fn main() {
 
   println!("{:?}", coloring.to_hsv());
   // [110.0, 86.0, 34.0]
+
+  println!("{:?}", coloring.to_hwb());
+  // [110.0, 5.0, 38.0]
 }
 ```
 

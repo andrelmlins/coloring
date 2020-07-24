@@ -56,23 +56,8 @@ impl Coloring {
             colors_hsl[0] = 0.0;
             colors_hsl[1] = 0.0;
         } else {
+            colors_hsl[0] = Coloring::get_hue(max, delta, colors);
             colors_hsl[1] = delta / (1.0 - libm::fabs(2.0 * colors_hsl[2] - 1.0));
-
-            match max {
-                x if x == colors[0] => {
-                    colors_hsl[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / delta, 6.0);
-                    if colors[2] > colors[1] {
-                        colors_hsl[0] += 360.0;
-                    }
-                }
-                x if x == colors[1] => {
-                    colors_hsl[0] = 60.0 * ((colors[2] - colors[0]) / delta + 2.0);
-                }
-                x if x == colors[2] => {
-                    colors_hsl[0] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
-                }
-                _ => {}
-            }
         }
 
         colors_hsl[0] = libm::round(colors_hsl[0]);
@@ -138,21 +123,7 @@ impl Coloring {
         if delta == 0.0 {
             colors_hsv[0] = 0.0;
         } else {
-            match max {
-                x if x == colors[0] => {
-                    colors_hsv[0] = 60.0 * libm::fmod((colors[1] - colors[2]) / delta, 6.0);
-                    if colors[2] > colors[1] {
-                        colors_hsv[0] += 360.0;
-                    }
-                }
-                x if x == colors[1] => {
-                    colors_hsv[0] = 60.0 * ((colors[2] - colors[0]) / delta + 2.0);
-                }
-                x if x == colors[2] => {
-                    colors_hsv[0] = 60.0 * ((colors[0] - colors[1]) / delta + 4.0);
-                }
-                _ => {}
-            }
+            colors_hsv[0] = Coloring::get_hue(max, delta, colors);
         }
 
         colors_hsv[0] = libm::round(colors_hsv[0]);
@@ -160,6 +131,56 @@ impl Coloring {
         colors_hsv[2] = libm::round(colors_hsv[2] * 100.0);
 
         return colors_hsv;
+    }
+
+    pub fn to_hwb(&self) -> [f64; 3] {
+        let mut colors: [f64; 3] = [0.0; 3];
+        let mut colors_hwb: [f64; 3] = [0.0; 3];
+
+        for i in 0..3 {
+            let value = (self.hash >> (i * 8)) & 255;
+            colors[i] = (value as f64) / 255.0;
+        }
+
+        let min = colors.iter().fold(f64::INFINITY, |a, &b| a.min(b)) as f64;
+        let max = colors.iter().fold(f64::MIN, |a, &b| a.max(b)) as f64;
+        let delta = max - min;
+
+        colors_hwb[1] = min;
+        colors_hwb[2] = 1.0 - max;
+
+        if delta == 0.0 {
+            colors_hwb[0] = 0.0;
+        } else {
+            colors_hwb[0] = Coloring::get_hue(max, delta, colors);
+        }
+
+        colors_hwb[0] = libm::round(colors_hwb[0]);
+        colors_hwb[1] = libm::round(colors_hwb[1] * 100.0);
+        colors_hwb[2] = libm::round(colors_hwb[2] * 100.0);
+
+        return colors_hwb;
+    }
+
+    fn get_hue(max: f64, delta: f64, colors_rgb: [f64; 3]) -> f64 {
+        let mut hue = 0.0;
+        match max {
+            x if x == colors_rgb[0] => {
+                hue = 60.0 * libm::fmod((colors_rgb[1] - colors_rgb[2]) / delta, 6.0);
+                if colors_rgb[2] > colors_rgb[1] {
+                    hue += 360.0;
+                }
+            }
+            x if x == colors_rgb[1] => {
+                hue = 60.0 * ((colors_rgb[2] - colors_rgb[0]) / delta + 2.0);
+            }
+            x if x == colors_rgb[2] => {
+                hue = 60.0 * ((colors_rgb[0] - colors_rgb[1]) / delta + 4.0);
+            }
+            _ => {}
+        }
+
+        return hue;
     }
 
     fn read_string(string: &String) -> u64 {
